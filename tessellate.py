@@ -1,14 +1,3 @@
-bl_info = {
-    "name" : "Tessellate2D",
-    "author" : "Al Bannwarth",
-    "version" : (1, 0),
-    "blender" : (2, 83, 0),
-    "location" : "View3d > Tool",
-    "warning" : "",
-    "wiki_url" : "bannwarth.design",
-    "category" : "Automation",
-}
-
 import bpy
 import math
 from mathutils import Euler
@@ -25,13 +14,16 @@ class TesPanel(bpy.types.Panel):
     bl_idname = 'PT_Tessellate'
     bl_space_type = 'VIEW_3D'
     bl_region_type = 'UI'
-    bl_category = 'Cum'
+    bl_category = 'Tes'
     
     def draw(self, context):
         layout = self.layout
         
         row = layout.row()
         row.label(text='Tessellate', icon='LIGHTPROBE_GRID')
+        #dev
+        row.operator('script.reload', text='', icon='FILE_REFRESH')
+        #end dev
         row = layout.row()
         row.operator('button.tes_hex')
         
@@ -43,14 +35,14 @@ class TesHex(bpy.types.Operator):
     recursion: bpy.props.IntProperty(
         name="Recursion",
         description="Number of tile recursion from center",
-        min=2, max=10,
+        min=2, soft_max=12, max=20,
         default=2,
     )
 
     size: bpy.props.FloatProperty(
         name="Size",
         description="Size ( Diameter ) of Tile",
-        min=1, max=10,
+        min=1, soft_max=10,
         default=1,
     )
 
@@ -62,16 +54,23 @@ class TesHex(bpy.types.Operator):
         print(context.collection)
         col_scene = context.scene.collection
         
-        #create collection "tiles" if it doesn't already exists            
-        if "tiles" not in bpy.data.collections:
-            #print('cumming')
-            col_tiles = bpy.data.collections.new("tiles")
-            
-        col_tiles = bpy.data.collections["tiles"]
+        tiles_name = context.collection.name + '_tiles'
+        print(tiles_name)
         
-        #move collection "tiles" to child of Scene
-        if "tiles" not in col_scene.children :
+        #create collection "tiles" if it doesn't already exists            
+        if tiles_name not in bpy.data.collections:
+            col_tiles = bpy.data.collections.new(tiles_name)
+            
+        col_tiles = bpy.data.collections[tiles_name]
+        
+        #move collection tiles_name to child of Scene
+        if tiles_name not in col_scene.children :
             col_scene.children.link(col_tiles)
+
+        if len(col_tiles.objects) > 0 :
+            for obj in col_tiles.objects:
+                print(obj.name)
+                bpy.data.objects.remove(obj, do_unlink=True)
 
         
         recur = self.recursion
