@@ -38,7 +38,8 @@ class TesPanel(bpy.types.Panel):
         #end dev
         row = layout.row()
         row.operator('button.tes_hex')
-        
+
+
 class TesHex(bpy.types.Operator):
     bl_idname = "button.tes_hex" # translates to C-name BUTTON_OT_explode
     bl_label = "Tessellate Hexagonaly"
@@ -63,11 +64,9 @@ class TesHex(bpy.types.Operator):
         return context.collection is not None and context.collection is not context.scene.collection
 
     def execute(self, context):
-        print(context.collection)
         col_scene = context.scene.collection
-        
         tiles_name = context.collection.name + '_tiles'
-        print(tiles_name)
+        print('cummies')
         
         #create collection "tiles" if it doesn't already exists            
         if tiles_name not in bpy.data.collections:
@@ -79,12 +78,10 @@ class TesHex(bpy.types.Operator):
         if tiles_name not in col_scene.children :
             col_scene.children.link(col_tiles)
 
-        if len(col_tiles.objects) > 0 :
-            for obj in col_tiles.objects:
-                print(obj.name)
-                bpy.data.objects.remove(obj, do_unlink=True)
+        # if len(col_tiles.objects) > 0 :
+        #     for obj in col_tiles.objects:
+        #         bpy.data.objects.remove(obj, do_unlink=True)
 
-        
         recur = self.recursion
         radius = self.size / 2
 
@@ -122,13 +119,13 @@ class TesHex(bpy.types.Operator):
         return {'FINISHED'}
 
         
-# def register():
-#     bpy.utils.register_class(TesPanel)
-#     bpy.utils.register_class(TesHex)
+def register():
+    bpy.utils.register_class(TesPanel)
+    bpy.utils.register_class(TesHex)
     
-# def unregister():
-#     bpy.utils.unregister_class(TesPanel)
-#     bpy.utils.unregister_class(TesHex)
+def unregister():
+    bpy.utils.unregister_class(TesPanel)
+    bpy.utils.unregister_class(TesHex)
     
-# if __name__ == "__main__":
-#     register()
+if __name__ == "__main__":
+    register()
