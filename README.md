@@ -16,8 +16,8 @@ How to use :
       
       Use the redo panel to adjust the recursion (how many time to reapeat the pattern outwards) and size (how large each tile is)
       
-      The more Instances (higher recursion) the slower the software will become.
+      The more Instances (higher recursion) the slower the software will run.
       
   5. Start drawing
-  6. If you want to change the recursion, delete the '_tiles" hierarchy ( right click > Delete Hierarchy) before re-clicking Hexagonal
+  6. If you want to change the recursion, delete the '_tiles' hierarchy ( right click > Delete Hierarchy) before re-clicking Hexagonal
   
